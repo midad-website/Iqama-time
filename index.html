@@ -1,0 +1,102 @@
+<!DOCTYPE html> 
+<html lang="ar"> 
+<head> 
+<meta charset="UTF-8"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+<title>أوقات الصلاة</title> 
+ <link href="https://googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+<style> 
+body { 
+background-color: #002366;
+color: #ffffff;
+ font-family: 'Cairo', sans-serif; 
+sans-serif; 
+direction: rtl; 
+text-align: center; 
+padding: 20px; } 
+.row { margin-bottom: 15px; } label { display: inline-block; width: 170px; margin-bottom: 5px; } input { padding: 5px; margin-left: 10px; } button { padding: 10px 16px; cursor: pointer; margin-top: 10px; } </style> 
+</head> 
+<body> 
+<h2>أوقات الصلاة، والإقامة، ونهاية جماعة الصلاة</h2> 
+<h2>أدخل أوقات الأذان ثم اضغط على حساب الأوقاط</h2> 
+<div class="row"> 
+<label for="fajr">أذان الفجر</label> 
+<input type="time" id="fajr"> 
+<label for="fajrIqamah">وقت الإقامة</label> 
+<input type="time" id="fajrIqamah" readonly> 
+<label for="fajrEnd">نهاية الصلاة</label> 
+<input type="time" id="fajrEnd" readonly> 
+</div> 
+<div class="row"> 
+<label for="dhuhr">أذان الظهر</label> 
+<input type="time" id="dhuhr"> 
+<label for="dhuhrIqamah">وقت الإقامة</label> 
+<input type="time" id="dhuhrIqamah" readonly> 
+<label for="dhuhrEnd">نهاية الصلاة</label> 
+<input type="time" id="dhuhrEnd" readonly> 
+</div> 
+<div class="row"> 
+<label for="asr">أذان العصر</label> 
+<input type="time" id="asr"> 
+<label for="asrIqamah">وقت الإقامة</label> 
+<input type="time" id="asrIqamah" readonly> 
+<label for="asrEnd">نهاية الصلاة</label> 
+<input type="time" id="asrEnd" readonly> 
+</div> 
+<div class="row"> 
+<label for="maghrib">أذان المغرب</label> 
+<input type="time" id="maghrib"> 
+<label for="maghribIqamah">وقت الإقامة</label> 
+<input type="time" id="maghribIqamah" readonly> 
+<label for="maghribEnd">نهاية الصلاة</label> 
+<input type="time" id="maghribEnd" readonly> 
+</div> 
+<div class="row"> 
+<label for="isha">أذان العشاء</label> 
+<input type="time" id="isha"> 
+<label for="ishaIqamah">وقت الإقامة</label> 
+<input type="time" id="ishaIqamah" readonly> 
+<label for="ishaEnd">نهاية الصلاة</label> 
+<input type="time" id="ishaEnd" readonly> 
+</div> 
+<button onclick="calculateTimes()">حساب الأوقات</button> 
+
+<br><br><br>
+
+<footer>
+    <div class="footer-content">
+        <p>&copy; 2026 جميع الحقوق محفوظة</p>
+        <h3>تصميم وتطوير</h3>
+        <h3>مياداد حق</h3>
+            </div>
+<img src="footer-iamge.jpg" style="max-width: 100%; height: auto; display: block;">
+
+</footer>
+
+
+
+
+<script> 
+// Add minutes to HH:MM time 
+function addMinutes(timeValue, minutesToAdd) { if (!timeValue) return ""; const [hours, minutes] = timeValue.split(":").map(Number); const totalMinutes = hours * 60 + minutes + minutesToAdd; const newHours = String(Math.floor(totalMinutes / 60) % 24).padStart(2, "0"); const newMinutes = String(totalMinutes % 60).padStart(2, "0"); return `${newHours}:${newMinutes}`; } 
+function calculateTimes() { 
+// Read adhan times 
+const fajr = document.getElementById("fajr").value; const dhuhr = document.getElementById("dhuhr").value; const asr = document.getElementById("asr").value; const maghrib = document.getElementById("maghrib").value; const isha = document.getElementById("isha").value; 
+
+// Iqamah offsets 
+const fajrIqamahOffset = 20; const dhuhrIqamahOffset = 20; const asrIqamahOffset = 15; const maghribIqamahOffset = 10; const ishaIqamahOffset = 15; 
+
+// Salat duration after iqamah 
+const fajrDuration = 15; const maghribDuration = 10; const dhuhrDuration = 12; const asrDuration = 12; const ishaDuration = 12; 
+
+// Calculate iqamah times 
+const fajrIqamah = addMinutes(fajr, fajrIqamahOffset); const dhuhrIqamah = addMinutes(dhuhr, dhuhrIqamahOffset); const asrIqamah = addMinutes(asr, asrIqamahOffset); const maghribIqamah = addMinutes(maghrib, maghribIqamahOffset); const ishaIqamah = addMinutes(isha, ishaIqamahOffset); 
+
+// Calculate end times = iqamah + salat duration 
+const fajrEnd = addMinutes(fajrIqamah, fajrDuration); const dhuhrEnd = addMinutes(dhuhrIqamah, dhuhrDuration); const asrEnd = addMinutes(asrIqamah, asrDuration); const maghribEnd = addMinutes(maghribIqamah, maghribDuration); const ishaEnd = addMinutes(ishaIqamah, ishaDuration); 
+
+// Show results 
+document.getElementById("fajrIqamah").value = fajrIqamah; document.getElementById("dhuhrIqamah").value = dhuhrIqamah; document.getElementById("asrIqamah").value = asrIqamah; document.getElementById("maghribIqamah").value = maghribIqamah; document.getElementById("ishaIqamah").value = ishaIqamah; document.getElementById("fajrEnd").value = fajrEnd; document.getElementById("dhuhrEnd").value = dhuhrEnd; document.getElementById("asrEnd").value = asrEnd; document.getElementById("maghribEnd").value = maghribEnd; document.getElementById("ishaEnd").value = ishaEnd; } 
+</script> 
+</body> 
+</html>
