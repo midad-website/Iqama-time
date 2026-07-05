@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>أوقات الصلاة</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <style>
@@ -71,73 +71,57 @@
       <th>الصلاة</th>
       <th>الوقت</th>
     </tr>
-    <tr>
-      <td>أذان الفجر</td>
-      <td id="fajrDisplay">...</td>
-    </tr>
-    <tr>
-      <td>أذان الظهر</td>
-      <td id="dhuhrDisplay">...</td>
-    </tr>
-    <tr>
-      <td>أذان العصر</td>
-      <td id="asrDisplay">...</td>
-    </tr>
-    <tr>
-      <td>أذان المغرب</td>
-      <td id="maghribDisplay">...</td>
-    </tr>
-    <tr>
-      <td>أذان العشاء</td>
-      <td id="ishaDisplay">...</td>
-    </tr>
+    <tr><td>أذان الفجر</td><td id="fajrDisplay">...</td></tr>
+    <tr><td>أذان الظهر</td><td id="dhuhrDisplay">...</td></tr>
+    <tr><td>أذان العصر</td><td id="asrDisplay">...</td></tr>
+    <tr><td>أذان المغرب</td><td id="maghribDisplay">...</td></tr>
+    <tr><td>أذان العشاء</td><td id="ishaDisplay">...</td></tr>
   </table>
 
   <h2>أوقات الصلاة، والإقامة، ونهاية جماعة الصلاة</h2>
-  <h2> اضغط على حساب الأوقات</h2>
 
   <div class="row">
     <label for="fajrInput">أذان الفجر</label>
     <input type="time" id="fajrInput">
-    <label for="fajrIqamah">وقت الإقامة</label>
+    <label for="fajrIqamah">إقامة صلاة الفجر</label>
     <input type="time" id="fajrIqamah" readonly>
-    <label for="fajrEnd">نهاية الصلاة</label>
+    <label for="fajrEnd">نهاية صلاة الفجر مع الجماعة</label>
     <input type="time" id="fajrEnd" readonly>
   </div>
 
   <div class="row">
     <label for="dhuhrInput">أذان الظهر</label>
     <input type="time" id="dhuhrInput">
-    <label for="dhuhrIqamah">وقت الإقامة</label>
+    <label for="dhuhrIqamah">إقامة صلاة الظهر</label>
     <input type="time" id="dhuhrIqamah" readonly>
-    <label for="dhuhrEnd">نهاية الصلاة</label>
+    <label for="dhuhrEnd">نهاية صلاة الظهر مع الجماعة</label>
     <input type="time" id="dhuhrEnd" readonly>
   </div>
 
   <div class="row">
     <label for="asrInput">أذان العصر</label>
     <input type="time" id="asrInput">
-    <label for="asrIqamah">وقت الإقامة</label>
+    <label for="asrIqamah">إقامة صلاة العصر</label>
     <input type="time" id="asrIqamah" readonly>
-    <label for="asrEnd">نهاية الصلاة</label>
+    <label for="asrEnd">نهاية صلاة العصر مع الجماعة</label>
     <input type="time" id="asrEnd" readonly>
   </div>
 
   <div class="row">
     <label for="maghribInput">أذان المغرب</label>
     <input type="time" id="maghribInput">
-    <label for="maghribIqamah">وقت الإقامة</label>
+    <label for="maghribIqamah">إقامة صلاة المغرب</label>
     <input type="time" id="maghribIqamah" readonly>
-    <label for="maghribEnd">نهاية الصلاة</label>
+    <label for="maghribEnd">نهاية صلاة المغرب مع الجماعة</label>
     <input type="time" id="maghribEnd" readonly>
   </div>
 
   <div class="row">
     <label for="ishaInput">أذان العشاء</label>
     <input type="time" id="ishaInput">
-    <label for="ishaIqamah">وقت الإقامة</label>
+    <label for="ishaIqamah">إقامة صلاة العشاء </label>
     <input type="time" id="ishaIqamah" readonly>
-    <label for="ishaEnd">نهاية الصلاة</label>
+    <label for="ishaEnd">نهاية صلاة العشاء مع الجماعة</label>
     <input type="time" id="ishaEnd" readonly>
   </div>
 
@@ -155,33 +139,6 @@
   </footer>
 
   <script>
-    async function loadPrayerTimes() {
-      const url = "https://api.aladhan.com/v1/timingsByCity?city=Makkah&country=Saudi%20Arabia&method=4";
-
-      try {
-        const response = await fetch(url);
-        const json = await response.json();
-        const t = json.data.timings;
-
-        document.getElementById("fajrDisplay").textContent = t.Fajr;
-        document.getElementById("dhuhrDisplay").textContent = t.Dhuhr;
-        document.getElementById("asrDisplay").textContent = t.Asr;
-        document.getElementById("maghribDisplay").textContent = t.Maghrib;
-        document.getElementById("ishaDisplay").textContent = t.Isha;
-
-        document.getElementById("fajrInput").value = t.Fajr;
-        document.getElementById("dhuhrInput").value = t.Dhuhr;
-        document.getElementById("asrInput").value = t.Asr;
-        document.getElementById("maghribInput").value = t.Maghrib;
-        document.getElementById("ishaInput").value = t.Isha;
-      } catch (e) {
-        alert("تعذر تحميل أوقات الصلاة");
-        console.log(e);
-      }
-    }
-
-    loadPrayerTimes();
-
     function addMinutes(timeValue, minutesToAdd) {
       if (!timeValue) return "";
       const [hours, minutes] = timeValue.split(":").map(Number);
@@ -198,29 +155,13 @@
       const maghrib = document.getElementById("maghribInput").value;
       const isha = document.getElementById("ishaInput").value;
 
-      const fajrIqamahOffset = 20;
-      const dhuhrIqamahOffset = 20;
-      const asrIqamahOffset = 15;
-      const maghribIqamahOffset = 10;
-      const ishaIqamahOffset = 15;
+      if (!fajr || !dhuhr || !asr || !maghrib || !isha) return;
 
-      const fajrDuration = 15;
-      const dhuhrDuration = 12;
-      const asrDuration = 12;
-      const maghribDuration = 10;
-      const ishaDuration = 12;
-
-      const fajrIqamah = addMinutes(fajr, fajrIqamahOffset);
-      const dhuhrIqamah = addMinutes(dhuhr, dhuhrIqamahOffset);
-      const asrIqamah = addMinutes(asr, asrIqamahOffset);
-      const maghribIqamah = addMinutes(maghrib, maghribIqamahOffset);
-      const ishaIqamah = addMinutes(isha, ishaIqamahOffset);
-
-      const fajrEnd = addMinutes(fajrIqamah, fajrDuration);
-      const dhuhrEnd = addMinutes(dhuhrIqamah, dhuhrDuration);
-      const asrEnd = addMinutes(asrIqamah, asrDuration);
-      const maghribEnd = addMinutes(maghribIqamah, maghribDuration);
-      const ishaEnd = addMinutes(ishaIqamah, ishaDuration);
+      const fajrIqamah = addMinutes(fajr, 20);
+      const dhuhrIqamah = addMinutes(dhuhr, 20);
+      const asrIqamah = addMinutes(asr, 15);
+      const maghribIqamah = addMinutes(maghrib, 10);
+      const ishaIqamah = addMinutes(isha, 15);
 
       document.getElementById("fajrIqamah").value = fajrIqamah;
       document.getElementById("dhuhrIqamah").value = dhuhrIqamah;
@@ -228,12 +169,56 @@
       document.getElementById("maghribIqamah").value = maghribIqamah;
       document.getElementById("ishaIqamah").value = ishaIqamah;
 
-      document.getElementById("fajrEnd").value = fajrEnd;
-      document.getElementById("dhuhrEnd").value = dhuhrEnd;
-      document.getElementById("asrEnd").value = asrEnd;
-      document.getElementById("maghribEnd").value = maghribEnd;
-      document.getElementById("ishaEnd").value = ishaEnd;
+      document.getElementById("fajrEnd").value = addMinutes(fajrIqamah, 15);
+      document.getElementById("dhuhrEnd").value = addMinutes(dhuhrIqamah, 12);
+      document.getElementById("asrEnd").value = addMinutes(asrIqamah, 12);
+      document.getElementById("maghribEnd").value = addMinutes(maghribIqamah, 10);
+      document.getElementById("ishaEnd").value = addMinutes(ishaIqamah, 12);
     }
+
+    async function loadPrayerTimes() {
+      const url = "https://api.aladhan.com/v1/timingsByCity?city=Makkah&country=Saudi%20Arabia&method=4";
+
+      try {
+        const response = await fetch(url, { method: "GET" });
+        if (!response.ok) {
+          throw new Error("HTTP " + response.status);
+        }
+
+        const json = await response.json();
+
+        if (!json || !json.data || !json.data.timings) {
+          throw new Error("Invalid API response");
+        }
+
+        const t = json.data.timings;
+
+        const fajr = (t.Fajr || "").slice(0, 5);
+        const dhuhr = (t.Dhuhr || "").slice(0, 5);
+        const asr = (t.Asr || "").slice(0, 5);
+        const maghrib = (t.Maghrib || "").slice(0, 5);
+        const isha = (t.Isha || "").slice(0, 5);
+
+        document.getElementById("fajrDisplay").textContent = fajr;
+        document.getElementById("dhuhrDisplay").textContent = dhuhr;
+        document.getElementById("asrDisplay").textContent = asr;
+        document.getElementById("maghribDisplay").textContent = maghrib;
+        document.getElementById("ishaDisplay").textContent = isha;
+
+        document.getElementById("fajrInput").value = fajr;
+        document.getElementById("dhuhrInput").value = dhuhr;
+        document.getElementById("asrInput").value = asr;
+        document.getElementById("maghribInput").value = maghrib;
+        document.getElementById("ishaInput").value = isha;
+
+        calculateTimes();
+      } catch (e) {
+        console.error("Prayer time load failed:", e);
+        alert("تعذر تحميل أوقات الصلاة. افتح Console لمعرفة الخطأ.");
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", loadPrayerTimes);
   </script>
 </body>
 </html>
