@@ -1,159 +1,582 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>أوقات الصلاة</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      background-color: #002366;
+      margin: 0;
+      min-height: 100vh;
+      padding: 35px 18px;
+      background:
+        radial-gradient(
+          circle at top right,
+          rgba(255, 255, 255, 0.12),
+          transparent 35%
+        ),
+        linear-gradient(145deg, #001747, #003b8f);
       color: #ffffff;
-      font-family: 'Cairo', sans-serif;
+      font-family: "Cairo", sans-serif;
       direction: rtl;
-      text-align: center;
-      padding: 20px;
     }
-    table {
-      margin: 0 auto 30px auto;
-      border-collapse: collapse;
+
+    .container {
       width: 100%;
-      max-width: 500px;
-      background: rgba(255,255,255,0.08);
+      max-width: 900px;
+      margin: 0 auto;
     }
-    th, td {
-      border: 1px solid rgba(255,255,255,0.25);
-      padding: 10px;
+
+    header {
+      margin-bottom: 42px;
+      text-align: center;
     }
-    .row {
-      margin-bottom: 15px;
+
+    .date-box {
+      margin-bottom: 25px;
+      padding: 18px 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .gregorian-date {
+      margin: 0 0 8px;
+      font-size: 23px;
+      font-weight: 700;
+    }
+
+    .hijri-date {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 21px;
+      font-weight: 600;
+    }
+
+    .mosque-icon {
+      width: 82px;
+      height: 82px;
+      margin: 0 auto 18px;
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
       align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      font-size: 41px;
     }
-    label {
-      display: inline-block;
-      min-width: 130px;
-      margin-bottom: 5px;
-      text-align: right;
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 38px;
+      font-weight: 700;
     }
-    input {
-      padding: 6px 8px;
-      margin-left: 10px;
+
+    .location {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 20px;
+      font-weight: 500;
     }
-    button {
-      padding: 10px 16px;
-      cursor: pointer;
-      margin-top: 10px;
+
+    .loading-message {
+      margin: 14px 0 0;
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 18px;
     }
+
+    .section {
+      margin-bottom: 55px;
+    }
+
+    .section-title {
+      margin: 0 0 26px;
+      text-align: center;
+      font-size: 29px;
+      line-height: 1.7;
+      font-weight: 700;
+    }
+
+    .adhan-list {
+      width: 100%;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    .adhan-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 25px;
+      padding: 22px 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .adhan-row:first-child {
+      border-top: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .prayer-name {
+      font-size: 25px;
+      font-weight: 700;
+    }
+
+    .time-text {
+      direction: ltr;
+      unicode-bidi: isolate;
+      white-space: nowrap;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .schedule {
+      width: 100%;
+    }
+
+    .schedule-header,
+    .schedule-row {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr 1fr 1fr;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .schedule-header {
+      padding: 17px 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.25);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.35);
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 19px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .schedule-row {
+      padding: 25px 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.17);
+    }
+
+    .schedule-prayer {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .schedule-time {
+      direction: ltr;
+      unicode-bidi: isolate;
+      white-space: nowrap;
+      text-align: center;
+      font-size: 23px;
+      font-weight: 600;
+    }
+
+    .schedule-time.iqamah {
+      font-weight: 700;
+    }
+
+    .status-message {
+      min-height: 30px;
+      margin-top: 24px;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 18px;
+      line-height: 1.8;
+    }
+
     footer {
-      margin-top: 40px;
+      margin-top: 55px;
+      text-align: center;
     }
+
     .footer-content {
-      margin-bottom: 20px;
+      margin-bottom: 25px;
+      color: rgba(255, 255, 255, 0.82);
     }
-    img {
-      max-width: 100%;
+
+    .footer-content p {
+      margin: 0 0 12px;
+      font-size: 17px;
+    }
+
+    .footer-content h3 {
+      margin: 5px 0;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    footer img {
+      width: 100%;
+      max-width: 900px;
       height: auto;
       display: block;
       margin: 0 auto;
+      border-radius: 15px;
+    }
+
+    @media (max-width: 650px) {
+      body {
+        padding: 25px 12px;
+      }
+
+      .date-box {
+        padding: 15px 10px;
+      }
+
+      .gregorian-date {
+        font-size: 20px;
+      }
+
+      .hijri-date {
+        font-size: 18px;
+      }
+
+      .mosque-icon {
+        width: 70px;
+        height: 70px;
+        font-size: 35px;
+      }
+
+      h1 {
+        font-size: 31px;
+      }
+
+      .location {
+        font-size: 18px;
+      }
+
+      .loading-message {
+        font-size: 16px;
+      }
+
+      .section-title {
+        font-size: 24px;
+      }
+
+      .prayer-name {
+        font-size: 21px;
+      }
+
+      .time-text {
+        font-size: 24px;
+      }
+
+      .schedule-header,
+      .schedule-row {
+        grid-template-columns: 1.05fr 1fr 1fr 1fr;
+        gap: 5px;
+      }
+
+      .schedule-header {
+        padding: 14px 2px;
+        font-size: 14px;
+      }
+
+      .schedule-row {
+        padding: 21px 2px;
+      }
+
+      .schedule-prayer {
+        font-size: 18px;
+      }
+
+      .schedule-time {
+        font-size: 17px;
+      }
+
+      .status-message {
+        font-size: 16px;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .gregorian-date {
+        font-size: 18px;
+      }
+
+      .hijri-date {
+        font-size: 16px;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      .section-title {
+        font-size: 21px;
+      }
+
+      .prayer-name {
+        font-size: 19px;
+      }
+
+      .time-text {
+        font-size: 22px;
+      }
+
+      .schedule-header {
+        font-size: 11px;
+      }
+
+      .schedule-prayer {
+        font-size: 15px;
+      }
+
+      .schedule-time {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
+
 <body>
 
-  <h2>أوقات الصلاة في مكة اليوم</h2>
+  <main class="container">
 
-  <table>
-    <tr>
-      <th>الصلاة</th>
-      <th>الوقت</th>
-    </tr>
-    <tr><td>أذان الفجر</td><td id="fajrDisplay">...</td></tr>
-    <tr><td>أذان الظهر</td><td id="dhuhrDisplay">...</td></tr>
-    <tr><td>أذان العصر</td><td id="asrDisplay">...</td></tr>
-    <tr><td>أذان المغرب</td><td id="maghribDisplay">...</td></tr>
-    <tr><td>أذان العشاء</td><td id="ishaDisplay">...</td></tr>
-  </table>
+    <header>
 
-  <h2>أوقات الصلاة، والإقامة، ونهاية الصلاة مع الجماعة عموما</h2>
+      <div class="date-box">
+        <p class="gregorian-date" id="gregorianDate"></p>
+        <p class="hijri-date" id="hijriDate"></p>
+      </div>
 
-  <div class="row">
-    <label for="fajrInput">أذان الفجر</label>
-    <input type="time" id="fajrInput">
-    <label for="fajrIqamah">إقامة صلاة الفجر</label>
-    <input type="time" id="fajrIqamah" readonly>
-    <label for="fajrEnd">نهاية صلاة الفجر مع الجماعة</label>
-    <input type="time" id="fajrEnd" readonly>
-  </div>
+      <div class="mosque-icon">☪</div>
 
-  <div class="row">
-    <label for="dhuhrInput">أذان الظهر</label>
-    <input type="time" id="dhuhrInput">
-    <label for="dhuhrIqamah">إقامة صلاة الظهر</label>
-    <input type="time" id="dhuhrIqamah" readonly>
-    <label for="dhuhrEnd">نهاية صلاة الظهر مع الجماعة</label>
-    <input type="time" id="dhuhrEnd" readonly>
-  </div>
+      <h1>أوقات الصلاة في مكة</h1>
 
-  <div class="row">
-    <label for="asrInput">أذان العصر</label>
-    <input type="time" id="asrInput">
-    <label for="asrIqamah">إقامة صلاة العصر</label>
-    <input type="time" id="asrIqamah" readonly>
-    <label for="asrEnd">نهاية صلاة العصر مع الجماعة</label>
-    <input type="time" id="asrEnd" readonly>
-  </div>
+      <p class="location">
+        مكة المكرمة، المملكة العربية السعودية
+      </p>
 
-  <div class="row">
-    <label for="maghribInput">أذان المغرب</label>
-    <input type="time" id="maghribInput">
-    <label for="maghribIqamah">إقامة صلاة المغرب</label>
-    <input type="time" id="maghribIqamah" readonly>
-    <label for="maghribEnd">نهاية صلاة المغرب مع الجماعة</label>
-    <input type="time" id="maghribEnd" readonly>
-  </div>
+      <p class="loading-message" id="loadingMessage">
+        جارٍ تحميل أوقات الصلاة...
+      </p>
 
-  <div class="row">
-    <label for="ishaInput">أذان العشاء</label>
-    <input type="time" id="ishaInput">
-    <label for="ishaIqamah">إقامة صلاة العشاء </label>
-    <input type="time" id="ishaIqamah" readonly>
-    <label for="ishaEnd">نهاية صلاة العشاء مع الجماعة</label>
-    <input type="time" id="ishaEnd" readonly>
-  </div>
+    </header>
 
-  
+    <section class="section">
 
-  <footer>
-    <div class="footer-content">
-      <p>&copy; 2026 جميع الحقوق محفوظة</p>
-      <h3>تصميم وتطوير</h3>
-      <h3>مياداد حق</h3>
-    </div>
-    <img src="footer-iamge.jpg" alt="Footer image">
-  </footer>
+      <h2 class="section-title">
+        أوقات الصلاة في مكة اليوم
+      </h2>
+
+      <div class="adhan-list">
+
+        <div class="adhan-row">
+          <span class="prayer-name">أذان الفجر</span>
+          <span class="time-text" id="fajrDisplay">...</span>
+        </div>
+
+        <div class="adhan-row">
+          <span class="prayer-name">أذان الظهر</span>
+          <span class="time-text" id="dhuhrDisplay">...</span>
+        </div>
+
+        <div class="adhan-row">
+          <span class="prayer-name">أذان العصر</span>
+          <span class="time-text" id="asrDisplay">...</span>
+        </div>
+
+        <div class="adhan-row">
+          <span class="prayer-name">أذان المغرب</span>
+          <span class="time-text" id="maghribDisplay">...</span>
+        </div>
+
+        <div class="adhan-row">
+          <span class="prayer-name">أذان العشاء</span>
+          <span class="time-text" id="ishaDisplay">...</span>
+        </div>
+
+      </div>
+
+    </section>
+
+    <section class="section">
+
+      <h2 class="section-title">
+        أوقات الأذان والإقامة ونهاية الصلاة مع الجماعة عموماً
+      </h2>
+
+      <div class="schedule">
+
+        <div class="schedule-header">
+          <span>الصلاة</span>
+          <span>الأذان</span>
+          <span>الإقامة</span>
+          <span>نهاية الصلاة</span>
+        </div>
+
+        <div class="schedule-row">
+          <span class="schedule-prayer">الفجر</span>
+          <span class="schedule-time" id="fajrAdhan">...</span>
+          <span class="schedule-time iqamah" id="fajrIqamah">...</span>
+          <span class="schedule-time" id="fajrEnd">...</span>
+        </div>
+
+        <div class="schedule-row">
+          <span class="schedule-prayer">الظهر</span>
+          <span class="schedule-time" id="dhuhrAdhan">...</span>
+          <span class="schedule-time iqamah" id="dhuhrIqamah">...</span>
+          <span class="schedule-time" id="dhuhrEnd">...</span>
+        </div>
+
+        <div class="schedule-row">
+          <span class="schedule-prayer">العصر</span>
+          <span class="schedule-time" id="asrAdhan">...</span>
+          <span class="schedule-time iqamah" id="asrIqamah">...</span>
+          <span class="schedule-time" id="asrEnd">...</span>
+        </div>
+
+        <div class="schedule-row">
+          <span class="schedule-prayer">المغرب</span>
+          <span class="schedule-time" id="maghribAdhan">...</span>
+          <span class="schedule-time iqamah" id="maghribIqamah">...</span>
+          <span class="schedule-time" id="maghribEnd">...</span>
+        </div>
+
+        <div class="schedule-row">
+          <span class="schedule-prayer">العشاء</span>
+          <span class="schedule-time" id="ishaAdhan">...</span>
+          <span class="schedule-time iqamah" id="ishaIqamah">...</span>
+          <span class="schedule-time" id="ishaEnd">...</span>
+        </div>
+
+      </div>
+
+      <p class="status-message" id="statusMessage"></p>
+
+    </section>
+
+    <footer>
+
+      <div class="footer-content">
+        <p>&copy; 2026 جميع الحقوق محفوظة</p>
+        <h3>تصميم وتطوير</h3>
+        <h3>مياداد حق</h3>
+      </div>
+
+      <img
+        src="footer-iamge.jpg"
+        alt="Footer image"
+      >
+
+    </footer>
+
+  </main>
 
   <script>
+    function displayDates() {
+      const now = new Date();
+
+      const gregorianDate =
+        new Intl.DateTimeFormat("ar-SA-u-ca-gregory", {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+          year: "numeric"
+        }).format(now);
+
+      const hijriDate =
+        new Intl.DateTimeFormat("ar-SA-u-ca-islamic-umalqura", {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+          year: "numeric"
+        }).format(now);
+
+      document.getElementById("gregorianDate").textContent =
+        `التاريخ الميلادي: ${gregorianDate}`;
+
+      document.getElementById("hijriDate").textContent =
+        `التاريخ الهجري: ${hijriDate}`;
+    }
+
     function addMinutes(timeValue, minutesToAdd) {
-      if (!timeValue) return "";
-      const [hours, minutes] = timeValue.split(":").map(Number);
-      const totalMinutes = hours * 60 + minutes + minutesToAdd;
-      const newHours = String(Math.floor(totalMinutes / 60) % 24).padStart(2, "0");
-      const newMinutes = String(totalMinutes % 60).padStart(2, "0");
+      if (!timeValue) {
+        return "";
+      }
+
+      const [hours, minutes] =
+        timeValue.split(":").map(Number);
+
+      let totalMinutes =
+        (hours * 60) + minutes + minutesToAdd;
+
+      totalMinutes = totalMinutes % 1440;
+
+      if (totalMinutes < 0) {
+        totalMinutes += 1440;
+      }
+
+      const newHours = String(
+        Math.floor(totalMinutes / 60)
+      ).padStart(2, "0");
+
+      const newMinutes = String(
+        totalMinutes % 60
+      ).padStart(2, "0");
+
       return `${newHours}:${newMinutes}`;
     }
 
-    function calculateTimes() {
-      const fajr = document.getElementById("fajrInput").value;
-      const dhuhr = document.getElementById("dhuhrInput").value;
-      const asr = document.getElementById("asrInput").value;
-      const maghrib = document.getElementById("maghribInput").value;
-      const isha = document.getElementById("ishaInput").value;
+    function formatTo12Hour(timeValue) {
+      if (!timeValue) {
+        return "...";
+      }
 
-      if (!fajr || !dhuhr || !asr || !maghrib || !isha) return;
+      const cleanTime =
+        timeValue.split(" ")[0].slice(0, 5);
+
+      const [hourValue, minute] =
+        cleanTime.split(":");
+
+      let hour = Number(hourValue);
+
+      if (
+        Number.isNaN(hour) ||
+        minute === undefined
+      ) {
+        return "...";
+      }
+
+      const period = hour >= 12 ? "م" : "ص";
+
+      hour = hour % 12;
+
+      if (hour === 0) {
+        hour = 12;
+      }
+
+      return `${hour}:${minute} ${period}`;
+    }
+
+    function calculateTimes(prayerTimes) {
+      const fajr = prayerTimes.fajr;
+      const dhuhr = prayerTimes.dhuhr;
+      const asr = prayerTimes.asr;
+      const maghrib = prayerTimes.maghrib;
+      const isha = prayerTimes.isha;
+
+      if (
+        !fajr ||
+        !dhuhr ||
+        !asr ||
+        !maghrib ||
+        !isha
+      ) {
+        return;
+      }
 
       const fajrIqamah = addMinutes(fajr, 20);
       const dhuhrIqamah = addMinutes(dhuhr, 20);
@@ -161,62 +584,151 @@
       const maghribIqamah = addMinutes(maghrib, 10);
       const ishaIqamah = addMinutes(isha, 15);
 
-      document.getElementById("fajrIqamah").value = fajrIqamah;
-      document.getElementById("dhuhrIqamah").value = dhuhrIqamah;
-      document.getElementById("asrIqamah").value = asrIqamah;
-      document.getElementById("maghribIqamah").value = maghribIqamah;
-      document.getElementById("ishaIqamah").value = ishaIqamah;
+      const fajrEnd = addMinutes(fajrIqamah, 15);
+      const dhuhrEnd = addMinutes(dhuhrIqamah, 12);
+      const asrEnd = addMinutes(asrIqamah, 12);
+      const maghribEnd = addMinutes(maghribIqamah, 10);
+      const ishaEnd = addMinutes(ishaIqamah, 12);
 
-      document.getElementById("fajrEnd").value = addMinutes(fajrIqamah, 15);
-      document.getElementById("dhuhrEnd").value = addMinutes(dhuhrIqamah, 12);
-      document.getElementById("asrEnd").value = addMinutes(asrIqamah, 12);
-      document.getElementById("maghribEnd").value = addMinutes(maghribIqamah, 10);
-      document.getElementById("ishaEnd").value = addMinutes(ishaIqamah, 12);
+      document.getElementById("fajrAdhan").textContent =
+        formatTo12Hour(fajr);
+
+      document.getElementById("dhuhrAdhan").textContent =
+        formatTo12Hour(dhuhr);
+
+      document.getElementById("asrAdhan").textContent =
+        formatTo12Hour(asr);
+
+      document.getElementById("maghribAdhan").textContent =
+        formatTo12Hour(maghrib);
+
+      document.getElementById("ishaAdhan").textContent =
+        formatTo12Hour(isha);
+
+      document.getElementById("fajrIqamah").textContent =
+        formatTo12Hour(fajrIqamah);
+
+      document.getElementById("dhuhrIqamah").textContent =
+        formatTo12Hour(dhuhrIqamah);
+
+      document.getElementById("asrIqamah").textContent =
+        formatTo12Hour(asrIqamah);
+
+      document.getElementById("maghribIqamah").textContent =
+        formatTo12Hour(maghribIqamah);
+
+      document.getElementById("ishaIqamah").textContent =
+        formatTo12Hour(ishaIqamah);
+
+      document.getElementById("fajrEnd").textContent =
+        formatTo12Hour(fajrEnd);
+
+      document.getElementById("dhuhrEnd").textContent =
+        formatTo12Hour(dhuhrEnd);
+
+      document.getElementById("asrEnd").textContent =
+        formatTo12Hour(asrEnd);
+
+      document.getElementById("maghribEnd").textContent =
+        formatTo12Hour(maghribEnd);
+
+      document.getElementById("ishaEnd").textContent =
+        formatTo12Hour(ishaEnd);
     }
 
     async function loadPrayerTimes() {
-      const url = "https://api.aladhan.com/v1/timingsByCity?city=Makkah&country=Saudi%20Arabia&method=4";
+      const loadingMessage =
+        document.getElementById("loadingMessage");
+
+      const statusMessage =
+        document.getElementById("statusMessage");
+
+      const url =
+        "https://api.aladhan.com/v1/timingsByCity" +
+        "?city=Makkah" +
+        "&country=Saudi%20Arabia" +
+        "&method=4";
 
       try {
-        const response = await fetch(url, { method: "GET" });
+        loadingMessage.textContent =
+          "جارٍ تحميل أوقات الصلاة...";
+
+        statusMessage.textContent = "";
+
+        const response = await fetch(url);
+
         if (!response.ok) {
-          throw new Error("HTTP " + response.status);
+          throw new Error(
+            "HTTP error: " + response.status
+          );
         }
 
         const json = await response.json();
 
-        if (!json || !json.data || !json.data.timings) {
+        if (
+          !json ||
+          !json.data ||
+          !json.data.timings
+        ) {
           throw new Error("Invalid API response");
         }
 
-        const t = json.data.timings;
+        const timings = json.data.timings;
 
-        const fajr = (t.Fajr || "").slice(0, 5);
-        const dhuhr = (t.Dhuhr || "").slice(0, 5);
-        const asr = (t.Asr || "").slice(0, 5);
-        const maghrib = (t.Maghrib || "").slice(0, 5);
-        const isha = (t.Isha || "").slice(0, 5);
+        const prayerTimes = {
+          fajr: (timings.Fajr || "").slice(0, 5),
+          dhuhr: (timings.Dhuhr || "").slice(0, 5),
+          asr: (timings.Asr || "").slice(0, 5),
+          maghrib: (timings.Maghrib || "").slice(0, 5),
+          isha: (timings.Isha || "").slice(0, 5)
+        };
 
-        document.getElementById("fajrDisplay").textContent = fajr;
-        document.getElementById("dhuhrDisplay").textContent = dhuhr;
-        document.getElementById("asrDisplay").textContent = asr;
-        document.getElementById("maghribDisplay").textContent = maghrib;
-        document.getElementById("ishaDisplay").textContent = isha;
+        document.getElementById("fajrDisplay").textContent =
+          formatTo12Hour(prayerTimes.fajr);
 
-        document.getElementById("fajrInput").value = fajr;
-        document.getElementById("dhuhrInput").value = dhuhr;
-        document.getElementById("asrInput").value = asr;
-        document.getElementById("maghribInput").value = maghrib;
-        document.getElementById("ishaInput").value = isha;
+        document.getElementById("dhuhrDisplay").textContent =
+          formatTo12Hour(prayerTimes.dhuhr);
 
-        calculateTimes();
-      } catch (e) {
-        console.error("Prayer time load failed:", e);
-        alert("تعذر تحميل أوقات الصلاة. افتح Console لمعرفة الخطأ.");
+        document.getElementById("asrDisplay").textContent =
+          formatTo12Hour(prayerTimes.asr);
+
+        document.getElementById("maghribDisplay").textContent =
+          formatTo12Hour(prayerTimes.maghrib);
+
+        document.getElementById("ishaDisplay").textContent =
+          formatTo12Hour(prayerTimes.isha);
+
+        calculateTimes(prayerTimes);
+
+        loadingMessage.textContent =
+          "تم تحميل أوقات الصلاة بنجاح";
+
+        statusMessage.textContent =
+          "ملاحظة: أوقات الإقامة ونهاية الصلاة تقديرية، وقد تختلف من مسجد إلى آخر.";
+
+      } catch (error) {
+        console.error(
+          "Prayer time load failed:",
+          error
+        );
+
+        loadingMessage.textContent =
+          "تعذر تحميل أوقات الصلاة";
+
+        statusMessage.textContent =
+          "تحقق من اتصال الإنترنت، ثم أعد تحميل الصفحة.";
       }
     }
 
-    document.addEventListener("DOMContentLoaded", loadPrayerTimes);
+    document.addEventListener(
+      "DOMContentLoaded",
+      function () {
+        displayDates();
+        loadPrayerTimes();
+      }
+    );
   </script>
+
 </body>
+
 </html>
